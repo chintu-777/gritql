@@ -348,22 +348,28 @@ fn delete_hanging_comma(
         .iter()
         .map(|r| (r.0.effective_range(), r.1.len()))
         .collect();
-
+    
+    // Flag to track if the last character was a comma
+    let mut previous_char_was_comma = false;
+    
     for (index, c) in chars {
         if Some(&index) != next_comma {
-            result.push(c);
+            next_comma = to_delete.next();
+            previous_char_was_comma = false;
+            continue;
+        }
+        if c == ',' {
+            if previous_char_was_comma {
+                continue;
+            }
+            previous_char_was_comma = true;
         } else {
             // Keep track of ranges we need to expand into, since we deleted code in the range
             // This isn't perfect, but it's good enough for tracking cell boundaries
-            for (range, ..) in replacement_ranges.iter_mut().rev() {
-                if range.end >= index {
-                    range.end += 1;
-                    break;
-                }
+            previous_char_was_comma = false;
+
             }
-            ranges_updates = update_range_shifts(index + offset, &ranges_updates, &ranges);
-            next_comma = to_delete.next();
-        }
+        result.push(c);
     }
 
     for (r, u) in replacements.iter_mut().zip(ranges_updates) {
