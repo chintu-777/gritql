@@ -10,7 +10,7 @@ jobs:
   test-rust:
     name: Rust tests (marzano)
     timeout-minutes: 20
-    runs-on: namespace-profile-standard-ubuntu22-amd64
+    runs-on: ubuntu-latest
     permissions:
       contents: "read"
       id-token: "write"
@@ -21,7 +21,7 @@ jobs:
       BUILD_PLATFORM: amd64
     steps:
       - name: clone code
-        uses: namespacelabs/nscloud-checkout-action@v4
+        uses: actions/checkout@v4
         with:
           submodules: recursive
       - name: Install Protoc
@@ -69,13 +69,13 @@ jobs:
   test-rust-wasm:
     name: Rust wasm
     timeout-minutes: 15
-    runs-on: namespace-profile-standard-ubuntu22-amd64
+    runs-on: ubuntu-latest
     permissions:
       contents: "read"
       id-token: "write"
     steps:
       - name: clone code
-        uses: namespacelabs/nscloud-checkout-action@v4
+        uses: actions/checkout@v4
         with:
           submodules: recursive
       - name: install Rust
@@ -96,10 +96,10 @@ jobs:
     permissions:
       contents: "read"
       id-token: "write"
-    runs-on: namespace-profile-standard-ubuntu22-amd64
+    runs-on: ubuntu-latest
     steps:
       - name: clone code
-        uses: namespacelabs/nscloud-checkout-action@v4
+        uses: actions/checkout@v4
         with:
           submodules: recursive
       - name: install Rust
